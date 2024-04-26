@@ -108,7 +108,7 @@ export default async function Page({ params, searchParams }: { params: { slug: s
               ))}
             </div>
           ) : null}
-          <div className="mt-4 ProseMirror" dangerouslySetInnerHTML={{ __html: spu.content || "" }}></div>
+          <div className="mt-4 wysiwyg" dangerouslySetInnerHTML={{ __html: spu.content || "" }}></div>
         </div>
       </main>
       <SiteFooter />

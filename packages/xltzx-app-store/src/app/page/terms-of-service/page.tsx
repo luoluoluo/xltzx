@@ -17,7 +17,7 @@ export default async function Page() {
       <main className="flex-1">
         <div className="container">
           <div className="mt-8 p-4 text-center font-bold text-xl">服务条款</div>
-          <div className="mt-8 ProseMirror" dangerouslySetInnerHTML={{ __html: setting?.termsOfService || "" }}></div>
+          <div className="mt-8 wysiwyg" dangerouslySetInnerHTML={{ __html: setting?.termsOfService || "" }}></div>
         </div>
       </main>
       <SiteFooter />

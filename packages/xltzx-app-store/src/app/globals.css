@@ -97,86 +97,86 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
-.ProseMirror {
+.wysiwyg {
   font-weight: 400;
   min-height: 100px;
   white-space: pre-wrap;
 }
-.ProseMirror > * + * {
+.wysiwyg > * + * {
   margin-top: 0.75em;
 }
-/* .ProseMirror img {
+/* .wysiwyg img {
   max-width: 20rem;
 } */
-.ProseMirror p {
+.wysiwyg p {
   margin: 12px 0;
   line-height: normal;
 }
-.ProseMirror strong {
+.wysiwyg strong {
     font-weight: bold;
 }
-.ProseMirror em {
+.wysiwyg em {
     font-style: italic;
 }
-.ProseMirror ul,
-.ProseMirror ol {
+.wysiwyg ul,
+.wysiwyg ol {
   padding: 0 1.2rem;
 }
-.ProseMirror h1 {
+.wysiwyg h1 {
     font-size: 2.125rem;
 }
-.ProseMirror h2 {
+.wysiwyg h2 {
     font-size: 1.875rem;
 }
-.ProseMirror h3 {
+.wysiwyg h3 {
     font-size: 1.5rem;
 }
-.ProseMirror h4 {
+.wysiwyg h4 {
     font-size: 1.25rem;
 }
-.ProseMirror h5 {
+.wysiwyg h5 {
     font-size: 1.125rem;
 }
-.ProseMirror h6 {
+.wysiwyg h6 {
     font-size: 1rem;
 }
-.ProseMirror code {
+.wysiwyg code {
   background-color: #000000;
   color: #616161;
 }
-.ProseMirror pre {
+.wysiwyg pre {
   background: #0d0d0d;
   color: #fff;
   font-family: "JetBrainsMono", monospace;
   padding: 0.75rem 1rem;
   border-radius: 0.5rem;
 }
-.ProseMirror pre code {
+.wysiwyg pre code {
   color: inherit;
   padding: 0;
   background: none;
   font-size: 0.8rem;
 }
-.ProseMirror img {
+.wysiwyg img {
   max-width: 100%;
   height: auto;
   margin: 0 auto;
 }
-.ProseMirror blockquote {
+.wysiwyg blockquote {
   padding-left: 1rem;
   border-left: 2px solid #000000;
 }
-.ProseMirror hr {
+.wysiwyg hr {
   border: none;
   border-top: 2px solid #000000;
   margin: 2rem 0;
 }
-.ProseMirror table {
+.wysiwyg table {
   width: 100%;
   min-width: 100%;
 }
-.ProseMirror table td,
-.ProseMirror table th {
+.wysiwyg table td,
+.wysiwyg table th {
   border: 1px solid #aaa;
   box-sizing: border-box;
   min-width: 1px;
@@ -186,11 +186,11 @@ input[type=number] {
   text-align: unset;
   font-weight: normal;
 }
-.ProseMirror table td > *,
-.ProseMirror table th > * {
+.wysiwyg table td > *,
+.wysiwyg table th > * {
   margin-bottom: 0;
 }
-.ProseMirror table .selectedCell:after {
+.wysiwyg table .selectedCell:after {
   background: rgba(200,200,255,0.4);
   content: "";
   left: 0;
@@ -201,7 +201,7 @@ input[type=number] {
   position: absolute;
   z-index: 2;
 }
-.ProseMirror table .column-resize-handle {
+.wysiwyg table .column-resize-handle {
   background-color: #adf;
   bottom: -2px;
   position: absolute;
@@ -210,7 +210,7 @@ input[type=number] {
   top: 0;
   width: 4px;
 }
-.ProseMirror table p {
+.wysiwyg table p {
   margin: 0;
 }
 /* 

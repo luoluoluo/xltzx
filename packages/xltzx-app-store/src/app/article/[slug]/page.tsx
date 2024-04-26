@@ -46,7 +46,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
       <main className="flex-1">
         <div className="container">
           <div className="mt-8 p-4 text-center font-bold text-xl">{article.title}</div>
-          <div className="mt-8 ProseMirror" dangerouslySetInnerHTML={{ __html: article.content || "" }}></div>
+          <div className="mt-8 wysiwyg" dangerouslySetInnerHTML={{ __html: article.content || "" }}></div>
         </div>
       </main>
       <SiteFooter />
