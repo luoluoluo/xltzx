@@ -4,6 +4,7 @@ import { gql } from "@apollo/client";
 import { apolloClient } from "@/utils/request";
 import { Setting, SettingInput } from "@/generated/graphql";
 import { CustomUpload } from "@/components/custom-upload";
+import { CustomEditor } from "@/components/custom-editor";
 
 const Index = ({ setting }: { setting?: Setting }) => {
   const [form] = Form.useForm();
@@ -85,6 +86,15 @@ const Index = ({ setting }: { setting?: Setting }) => {
       </Form.Item>
       <Form.Item name="mpQrcodeFileId" label="微信公众号二维码" initialValue={setting?.mpQrcodeFileId}>
         <CustomUpload />
+      </Form.Item>
+      <Form.Item name="guide" label="购物说明" initialValue={setting?.guide}>
+        <CustomEditor />
+      </Form.Item>
+      <Form.Item name="privacyAgreement" label="隐私协议" initialValue={setting?.privacyAgreement}>
+        <CustomEditor />
+      </Form.Item>
+      <Form.Item name="termsOfService" label="服务条款" initialValue={setting?.termsOfService}>
+        <CustomEditor />
       </Form.Item>
       <Form.Item wrapperCol={{ offset: 5 }}>
         <Button type="primary" htmlType="submit" loading={loading}>

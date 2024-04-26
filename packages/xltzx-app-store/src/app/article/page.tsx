@@ -14,7 +14,7 @@ import { graphqlRequest } from "@/utils/request";
 export async function generateMetadata() {
   const setting = await getSetting();
   return {
-    title: `全部文章 - ${setting?.title}`
+    title: `全部文章 - ${setting?.name} - ${setting?.title}`
   };
 }
 
@@ -98,7 +98,7 @@ export default async function Page({ searchParams }: { searchParams: { page?: st
       <SiteFooter />
       <Wechat
         shareConfig={{
-          title: setting?.title || "",
+          title: `${setting?.name} - ${setting?.title}` || "",
           desc: setting?.description || "",
           imgUrl: getFileUrl(setting?.logoFileId || "")
         }}

@@ -50,9 +50,10 @@ export const uploadFile = async (req: Request, res: Response) => {
   if (!fs.existsSync(dirPath)) {
     fs.mkdirSync(dirPath, { recursive: true });
   }
-  fs.rename(req.file?.path!, filePath, err => {
-    console.log(err);
+  fs.copyFile(req.file?.path!, filePath, err => {
+    getLogger().error(err, "uploadFile");
   });
+  getLogger().debug([req.file?.path, filePath], "uploadFile");
   res.send({
     id: fileId,
     name: req.file?.originalname

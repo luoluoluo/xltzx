@@ -23,6 +23,9 @@ const Index = () => {
             copyright
             logoFileId
             mpQrcodeFileId
+            privacyAgreement
+            termsOfService
+            guide
           }
         }
       `),

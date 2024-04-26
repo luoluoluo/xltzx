@@ -12,7 +12,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   const spu = await loadSpuData(params.slug);
   const setting = await getSetting();
   return {
-    title: `${spu?.title}-${setting?.title}`
+    title: `${spu?.title} - ${setting?.name} - ${setting?.title}`
   };
 }
 
@@ -114,7 +114,7 @@ export default async function Page({ params, searchParams }: { params: { slug: s
       <SiteFooter />
       <Wechat
         shareConfig={{
-          title: `${sku.title} - ${setting?.title}`,
+          title: `${sku.title} - ${setting?.name} - ${setting?.title}`,
           desc: setting?.description || "",
           imgUrl: getFileUrl(sku.fileId || "", { w: 800, h: 800 })
         }}

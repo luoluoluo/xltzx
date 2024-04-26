@@ -1,7 +1,9 @@
 import { SiteFooter } from "@/components/layouts/site-footer";
 import { SiteHeader } from "@/components/layouts/site-header";
+import { Wechat } from "@/components/wechat";
 import { getSetting } from "@/config/setting";
 import { ArticleQuery, Article as ContentArticle } from "@/generated/graphql";
+import { getFileUrl } from "@/utils";
 import { getLogger } from "@/utils/logger";
 import { graphqlRequest } from "@/utils/request";
 
@@ -9,7 +11,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   const article = await loadArticleData({ id: params.slug || "" });
   const setting = await getSetting();
   return {
-    title: `${article?.title}-${setting?.title}`
+    title: `${article?.title} - ${setting?.name} - ${setting?.title}`
   };
 }
 const loadArticleData = async (query: ArticleQuery) => {
@@ -33,6 +35,7 @@ const loadArticleData = async (query: ArticleQuery) => {
 };
 // { searchParams: { article?: string }
 export default async function Page({ params }: { params: { slug: string } }) {
+  const setting = await getSetting();
   const article = await loadArticleData({ id: params.slug });
   if (!article) {
     return <></>;
@@ -47,6 +50,13 @@ export default async function Page({ params }: { params: { slug: string } }) {
         </div>
       </main>
       <SiteFooter />
+      <Wechat
+        shareConfig={{
+          title: `${article.title} - ${setting?.name} - ${setting?.title}`,
+          desc: setting?.description || "",
+          imgUrl: getFileUrl(article.fileId || "", { w: 800, h: 800 })
+        }}
+      />
     </div>
   );
 }
