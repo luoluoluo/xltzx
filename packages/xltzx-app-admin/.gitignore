@@ -28,3 +28,4 @@ stats.html
 logs
 .env
 .env.production
+.scp.sh
