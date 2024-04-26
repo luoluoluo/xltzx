@@ -1,6 +1,7 @@
 import { Upload } from "antd";
 import * as Icons from "@ant-design/icons";
 import { genId } from "@/utils";
+import { UploadListType } from "antd/es/upload/interface";
 const baseUrl = import.meta.env.VITE_API_URL;
 const uploadButton = (
   <button style={{ border: 0, background: "none" }} type="button">
@@ -15,6 +16,8 @@ export const CustomUpload = (props: {
   max?: number;
   value?: Value[] | string;
   onChange?: (value?: Value[] | string) => void;
+  listType?: UploadListType;
+  accept?: string;
 }) => {
   // const [fileList, setFileList] = useState<UploadFile[]>([]);
   const max = props.max || 1;
@@ -29,9 +32,9 @@ export const CustomUpload = (props: {
   return (
     <Upload
       name="file"
-      listType="picture-card"
+      listType={props.listType || "picture-card"}
       multiple={max > 1}
-      accept="image/png, image/gif, image/jpeg, image/webp"
+      accept={props.accept || "image/png, image/gif, image/jpeg, image/webp, images/jpg"}
       defaultFileList={defaultFileList}
       maxCount={max}
       action={`${baseUrl}/file`}
