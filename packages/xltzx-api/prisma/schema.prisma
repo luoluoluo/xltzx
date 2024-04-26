@@ -1,0 +1,311 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// 文件
+model File {
+  id              String    @id @db.VarChar(80)
+  hash            String    @unique @db.VarChar(200)
+  path            String    @db.VarChar(200)
+  name            String?   @db.VarChar(200)
+  size            Int? // 文件大小
+  type            String? // 文件类型
+  createdAt       DateTime  @default(now()) @map("created_at")
+  skuFiles        SkuFile[]
+  banners         Banner[]
+  spus            Spu[]
+  skus            Sku[]
+  settingMpQrcode Setting[] @relation(name: "settingMpQrcode")
+  settingLogo     Setting[] @relation(name: "settingLogo")
+  orders          Order[]
+  Article         Article[]
+
+  @@map("file")
+}
+
+model Banner {
+  id        String   @id @db.VarChar(80)
+  fileId    String   @map("file_id") @db.VarChar(80)
+  file      File     @relation(fields: [fileId], references: [id])
+  title     String   @db.VarChar(80)
+  link      String   @db.VarChar(200)
+  sort      Int      @db.Int
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("banner")
+}
+
+model Staff {
+  id              String           @id @db.VarChar(80)
+  userId          String?          @map("user_id") @db.VarChar(80)
+  user            User?            @relation("defaultUser", fields: [userId], references: [id])
+  code            String           @unique @db.VarChar(80)
+  name            String           @db.VarChar(80)
+  password        String           @db.VarChar(80)
+  staffRoles      StaffRole[]
+  userBindedAt    DateTime?        @map("user_binded_at")
+  createdAt       DateTime         @default(now()) @map("created_at")
+  orders          Order[]
+  users           User[]
+  staffOperations StaffOperation[]
+  commissions     Commission[]
+
+  @@map("staff")
+}
+
+model StaffRole {
+  id        String   @id @db.VarChar(80)
+  staff     Staff    @relation(fields: [staffId], references: [id])
+  staffId   String   @map("staff_id") @db.VarChar(80)
+  roleId    String   @map("role_id") @db.VarChar(80)
+  role      Role     @relation(fields: [roleId], references: [id])
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("staff_role")
+}
+
+model Role {
+  id              String           @id @db.VarChar(80)
+  name            String           @db.VarChar(80)
+  staffRoles      StaffRole[]
+  rolePermissions RolePermission[]
+  createdAt       DateTime         @default(now()) @map("created_at")
+
+  @@map("role")
+}
+
+model RolePermission {
+  id         String   @id @db.VarChar(80)
+  role       Role     @relation(fields: [roleId], references: [id])
+  roleId     String   @map("role_id") @db.VarChar(80)
+  permission String   @db.VarChar(80)
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@map("role_permission")
+}
+
+model StaffOperation {
+  id        String   @id @db.VarChar(80)
+  staff     Staff    @relation(fields: [staffId], references: [id])
+  staffId   String   @map("staff_id") @db.VarChar(80)
+  content   String   @db.Text
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("staff_operation")
+}
+
+model SpecName {
+  id         String      @id @db.VarChar(80)
+  spuId      String?     @map("spu_id") @db.VarChar(80)
+  spu        Spu?        @relation(fields: [spuId], references: [id])
+  name       String      @db.VarChar(80)
+  createdAt  DateTime    @default(now()) @map("created_at")
+  specValues SpecValue[]
+
+  @@map("spec_name")
+}
+
+model SpecValue {
+  id            String         @id @db.VarChar(80)
+  spuId         String?        @map("spu_id") @db.VarChar(80)
+  spu           Spu?           @relation(fields: [spuId], references: [id])
+  value         String         @db.VarChar(80)
+  specNameId    String         @map("spec_name_id") @db.VarChar(80)
+  specName      SpecName       @relation(fields: [specNameId], references: [id])
+  createdAt     DateTime       @default(now()) @map("created_at")
+  skuSpecValues SkuSpecValue[]
+
+  @@map("spec_value")
+}
+
+model Attr {
+  id        String   @id @db.VarChar(80)
+  spuId     String?  @map("spu_id") @db.VarChar(80)
+  spu       Spu?     @relation(fields: [spuId], references: [id])
+  name      String   @db.VarChar(80)
+  value     String   @db.VarChar(80)
+  createdAt DateTime @default(now())
+
+  @@map("attr")
+}
+
+model Spu {
+  id          String      @id @db.VarChar(80)
+  fileId      String      @map("file_id") @db.VarChar(80)
+  file        File        @relation(fields: [fileId], references: [id])
+  skuId       String?     @map("sku_id") @db.VarChar(80) // 默认sku
+  sku         Sku?        @relation("defaultSku", fields: [skuId], references: [id])
+  title       String      @db.VarChar(80)
+  content     String      @db.Text
+  sort        Int         @db.Int
+  publishedAt DateTime?   @map("published_at") // 上架时间 
+  createdAt   DateTime    @default(now()) @map("created_at")
+  skus        Sku[]
+  specNames   SpecName[]
+  specValues  SpecValue[]
+  attrs       Attr[]
+
+  @@map("spu")
+}
+
+model Sku {
+  id              String         @id @db.VarChar(80)
+  type            String         @db.VarChar(80) // physical / virtual
+  spuId           String         @map("spu_id") @db.VarChar(80)
+  spu             Spu            @relation(fields: [spuId], references: [id])
+  skuSpecValues   SkuSpecValue[]
+  skuFiles        SkuFile[]
+  fileId          String         @map("file_id") @db.VarChar(80)
+  file            File           @relation(fields: [fileId], references: [id])
+  title           String         @db.VarChar(80)
+  stock           Int            @db.Int
+  price           Decimal        @db.Decimal(10, 2)
+  commissionPrice Decimal        @map("comission_price") @db.Decimal(10, 2) // 佣金
+  createdAt       DateTime       @default(now()) @map("created_at")
+  spus            Spu[]          @relation("defaultSku")
+  Order           Order[]
+
+  @@map("sku")
+}
+
+model SkuSpecValue {
+  id          String    @id @db.VarChar(80)
+  skuId       String    @map("sku_id") @db.VarChar(80)
+  sku         Sku       @relation(fields: [skuId], references: [id])
+  specValueId String    @map("spec_value_id") @db.VarChar(80)
+  specValue   SpecValue @relation(fields: [specValueId], references: [id])
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  @@map("sku_spec_value")
+}
+
+model SkuFile {
+  id        String   @id @db.VarChar(80)
+  skuId     String   @map("sku_id") @db.VarChar(80)
+  sku       Sku      @relation(fields: [skuId], references: [id])
+  fileId    String   @map("file_id") @db.VarChar(80)
+  file      File     @relation(fields: [fileId], references: [id])
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("sku_file")
+}
+
+model User {
+  id        String   @id @db.VarChar(80)
+  staffId   String?  @map("staff_id") @db.VarChar(80)
+  staff     Staff?   @relation(fields: [staffId], references: [id])
+  type      String   @db.VarChar(80)
+  code      String   @unique @db.VarChar(80)
+  name      String   @db.VarChar(80)
+  phone     String?  @db.VarChar(80)
+  area      String?  @db.VarChar(200)
+  address   String?  @db.VarChar(200)
+  createdAt DateTime @default(now()) @map("created_at")
+  orders    Order[]
+  staffs    Staff[]  @relation("defaultUser")
+
+  @@map("user")
+}
+
+model Order {
+  id               String       @id @db.VarChar(80)
+  type             String       @db.VarChar(80) // physical / virtual 
+  userId           String       @map("user_id") @db.VarChar(80)
+  user             User         @relation(fields: [userId], references: [id])
+  staffId          String?      @map("staff_id") @db.VarChar(80)
+  staff            Staff?       @relation(fields: [staffId], references: [id])
+  payId            String?      @map("pay_id") @db.VarChar(80) // 支付交易单号
+  skuId            String       @map("sku_id") @db.VarChar(80)
+  sku              Sku          @relation(fields: [skuId], references: [id])
+  fileId           String       @map("file_id") @db.VarChar(80)
+  file             File         @relation(fields: [fileId], references: [id])
+  title            String       @db.VarChar(80)
+  spec             String       @db.VarChar(80)
+  price            Decimal      @db.Decimal(10, 2)
+  quantity         Int          @db.Int
+  amount           Decimal      @db.Decimal(10, 2)
+  commissionAmount Decimal      @map("commission_amount") @db.Decimal(10, 2)
+  shippingName     String?      @map("shipping_name") @db.VarChar(80)
+  shippingPhone    String?      @map("shipping_phone") @db.VarChar(80)
+  shippingArea     String?      @map("shipping_area") @db.VarChar(200)
+  shippingAddress  String?      @map("shipping_address") @db.VarChar(200)
+  expressCompany   String?      @map("express_company") @db.VarChar(80) // 快递公司
+  expressCode      String?      @map("express_code") @db.VarChar(80) // 快递单号
+  state            String       @db.VarChar(80) // created：已创建 / paid：已支付 / shipped：已发货 /  completed：已完成 / canceled：已取消 / refunded：已退款
+  paidAt           DateTime?    @map("paid_at") // 支付时间
+  shippedAt        DateTime?    @map("shipping_at") // 发货时间
+  completedAt      DateTime?    @map("completed_at") // 完成时间
+  canceledAt       DateTime?    @map("canceled_at") // 取消时间
+  refundedAt       DateTime?    @map("refunded_at") // 退款时间
+  createdAt        DateTime     @default(now()) @map("created_at")
+  commissions      Commission[]
+  refund           Refund?
+
+  @@map("order")
+}
+
+model Refund {
+  id        String   @id @db.VarChar(80)
+  orderId   String   @unique @map("order_id") @db.VarChar(80)
+  order     Order    @relation(fields: [orderId], references: [id])
+  amount    Decimal  @db.Decimal(10, 2)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("refund")
+}
+
+model Article {
+  id          String    @id @db.VarChar(80)
+  fileId      String    @map("file_id") @db.VarChar(80)
+  file        File      @relation(fields: [fileId], references: [id])
+  title       String    @db.VarChar(80)
+  content     String    @db.MediumText
+  publishedAt DateTime? @map("published_at") // 发布时间
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  @@map("article")
+}
+
+model Setting {
+  id               String   @id @db.VarChar(80)
+  name             String?  @db.VarChar(80)
+  keyword          String?  @db.VarChar(200)
+  title            String?  @db.VarChar(80)
+  description      String?  @db.VarChar(500)
+  address          String?  @db.VarChar(200)
+  phone            String?  @db.VarChar(80)
+  wechat           String?  @db.VarChar(80)
+  copyright        String?  @db.VarChar(200)
+  privacyAgreement String?  @map("privacy_agreement") @db.MediumText
+  termsOfService   String?  @map("terms-of-service") @db.MediumText
+  guide            String?  @db.MediumText
+  logoFileId       String?  @map("logo_file_id") @db.VarChar(200)
+  logoFile         File?    @relation(name: "settingLogo", fields: [logoFileId], references: [id])
+  mpQrcodeFileId   String?  @map("mq_qrcode_file_id") @db.VarChar(200)
+  mpQrcodeFile     File?    @relation(name: "settingMpQrcode", fields: [mpQrcodeFileId], references: [id])
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  @@map("setting")
+}
+
+model Commission {
+  id          String    @id @db.VarChar(80)
+  staffId     String    @map("staff_id") @db.VarChar(80)
+  staff       Staff     @relation(fields: [staffId], references: [id])
+  orderId     String    @map("order_id") @db.VarChar(80)
+  order       Order     @relation(fields: [orderId], references: [id])
+  amount      Decimal   @db.Decimal(10, 2)
+  state       String    @db.VarChar(80) // created：已创建 /  completed：已完成 
+  completedAt DateTime? @map("completed_at") // 完成时间 
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  @@map("commission")
+}
