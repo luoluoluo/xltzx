@@ -1,1 +1,1 @@
-scp -r ./dist/ ./prisma ./package.json ./package-lock.json ./ecosystem.config.js ./.env.production root@tsx.com:/data/xlt/packages/xltzx-api/
+scp -r ./dist/ ./prisma ./package.json ./package-lock.json ./ecosystem.config.js ./.env.production root@xltzx.com:/data/xltzx/luoyuanjie/packages/xltzx-api/

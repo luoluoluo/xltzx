@@ -1,1 +1,1 @@
-scp -r ./.next root@tsx.com:/data/xlt/packages/xltzx-app/
+scp -r ./.next root@xltzx.com.com:/data/xltzx/luoyuanjie/packages/xltzx-app-store/
