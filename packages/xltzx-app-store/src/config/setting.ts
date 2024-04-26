@@ -18,6 +18,9 @@ export const getSetting = async () => {
           wechat
           logoFileId
           mpQrcodeFileId
+          privacyAgreement
+          termsOfService
+          guide
         }
       }
     `
