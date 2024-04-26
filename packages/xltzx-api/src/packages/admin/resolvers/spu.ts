@@ -20,7 +20,7 @@ const spuResolver: Resolvers<Context> = {
         },
         select: { ...select.select.edges.select },
 
-        orderBy: [{ id: "desc" }]
+        orderBy: [{ sort: "asc" }, { id: "desc" }]
       });
       const count = await prisma.spu.count({ where: { ...where } });
       return {
