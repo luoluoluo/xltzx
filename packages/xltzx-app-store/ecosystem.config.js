@@ -1,5 +1,5 @@
 const nextPortIndex = process.argv.indexOf("-p");
-const port = nextPortIndex !== -1 ? process.argv[nextPortIndex + 1] : 3000;
+const port = nextPortIndex !== -1 ? process.argv[nextPortIndex + 1] : 3001;
 module.exports = {
   apps: [
     {
